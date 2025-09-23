@@ -1,6 +1,8 @@
 #!/bin/bash
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0411021f836b1fbcc"
+ZONE_ID="Z08060901N40TB60HLP0H"
+DOMAIN_NAME="nikvi.fun"
 
 for $instance in $@
 do
@@ -15,6 +17,24 @@ do
         RECORD_NAME="$DOMAIN_NAME" 
     fi
 
-    echo "$instance: $IP"    
+    echo "$instance: $IP"  
 
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment": "Updating record set"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }
+    '  
 done
