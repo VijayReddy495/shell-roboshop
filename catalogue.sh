@@ -10,6 +10,7 @@ LOGS_FOLDER="/var/log/shell-roboshop"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log" # /var/log/shell-script/16-logs.log
 SCRIPT_DIR=$pwd
+echo " $SCRIPT_DIR "
 MONGODB_HOST=mongodb.daws86s.fun
 mkdir -p $LOGS_FOLDER
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE
@@ -38,7 +39,7 @@ dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "installing nodejs"
 
 id roboshop &>>$LOG_FILE
-if [ $? -ne 0];then  
+if [ $? -ne 0 ];then  
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
 else
     echo -e "roboshop user already exist....$Y skipping $N"
