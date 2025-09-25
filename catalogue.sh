@@ -28,13 +28,13 @@ VALIDATE(){ # functions receive inputs through args just like shell script args
 }
 
 dnf module disable nodejs -y &>>$LOG_FILE
-validate $? "Disabling nodejs"
+VALIDATE $? "Disabling nodejs"
 
 dnf module enable nodejs:20 -y &>>$LOG_FILE
-validate $? "enabling nodejs"
+VALIDATE $? "enabling nodejs"
 
 dnf install nodejs -y &>>$LOG_FILE
-validate $? "installing nodejs"
+VALIDATE $? "installing nodejs"
 
 id roboshop
 if[ $id -ne 0];then  
